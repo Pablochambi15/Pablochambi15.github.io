@@ -1,0 +1,136 @@
+{% extends 'base2.html' %}
+
+{% block content %}
+    <div class="table-container">
+        <h1>Lista de Productos</h1>
+
+        <!-- Botón para abrir el modal de creación -->
+        <div class="button-container">
+            <button id="crear-producto-btn" class="primary-btn">Crear Producto</button>
+        </div>
+
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                    <tr>
+                        <td>{{ producto.nombre }}</td>
+                        <td>{{ producto.descripcion }}</td>
+                        <td>{{ producto.precio }}</td>
+                        <td>{{ producto.cantidad }}</td>
+                        <td>
+                            <!-- Botón para abrir el modal de edición -->
+                            <button class="editar-btn" 
+                                    data-id="{{ producto.id }}"
+                                    data-nombre="{{ producto.nombre }}"
+                                    data-descripcion="{{ producto.descripcion }}"
+                                    data-precio="{{ producto.precio }}"
+                                    data-cantidad="{{ producto.cantidad }}">Editar</button>
+
+                            <!-- Formulario para eliminar producto -->
+                            <form method="POST" action="{% url 'productos' %}" class="inline-form">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="eliminar">
+                                <input type="hidden" name="producto_id" value="{{ producto.id }}">
+                                <button type="submit" class="delete-btn">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal para el formulario de creación/edición -->
+    <div id="producto-modal" class="modal" aria-label="Formulario de Producto">
+        <div class="modal-content">
+            <span id="close-modal" class="close">&times;</span>
+            <h2 style="text-align: center; color: #333; margin-bottom: 20px;">Crear/Editar Producto</h2>
+
+            <form method="POST" action="{% url 'productos' %}">
+                {% csrf_token %}
+
+                <!-- Mostrar errores si los hay -->
+                {% if form.errors %}
+                    <div class="error-messages">
+                        <ul>
+                            {% for field, errors in form.errors.items %}
+                                {% for error in errors %}
+                                    <li>{{ field|capfirst }}: {{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                {{ form.as_p }}
+
+                <input type="hidden" name="action" id="action" value="guardar">
+                <input type="hidden" name="producto_id" id="producto-id">
+
+                <button type="submit" class="primary-btn" id="guardar-btn">Guardar Producto</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('producto-modal');
+            const closeModal = document.getElementById('close-modal');
+            const crearProductoBtn = document.getElementById('crear-producto-btn');
+            const editarBtns = document.querySelectorAll('.editar-btn');
+            const guardarBtn = document.getElementById('guardar-btn');
+            const productoIdField = document.getElementById('producto-id');
+            const actionField = document.getElementById('action');
+
+            // Abrir modal para crear
+            crearProductoBtn.addEventListener('click', () => {
+                limpiarFormulario();
+                guardarBtn.textContent = 'Guardar Producto';
+                actionField.value = 'crear';
+                modal.style.display = 'block';
+            });
+
+            // Abrir modal para editar
+            editarBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    llenarFormulario(e.target.dataset);
+                    guardarBtn.textContent = 'Actualizar Producto';
+                    actionField.value = 'editar';
+                    modal.style.display = 'block';
+                });
+            });
+
+            // Cerrar modal
+            closeModal.addEventListener('click', () => modal.style.display = 'none');
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) modal.style.display = 'none';
+            });
+
+            // Funciones auxiliares
+            function limpiarFormulario() {
+                productoIdField.value = '';
+                document.getElementById('id_nombre').value = '';
+                document.getElementById('id_descripcion').value = '';
+                document.getElementById('id_precio').value = '';
+                document.getElementById('id_cantidad').value = '';
+            }
+
+            function llenarFormulario(data) {
+                productoIdField.value = data.id;
+                document.getElementById('id_nombre').value = data.nombre;
+                document.getElementById('id_descripcion').value = data.descripcion;
+                document.getElementById('id_precio').value = data.precio;
+                document.getElementById('id_cantidad').value = data.cantidad;
+            }
+        });
+    </script>
+{% endblock %}

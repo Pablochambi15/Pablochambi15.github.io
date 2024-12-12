@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio{% endblock %}
+
+{% load static %}
+
+{% block content %}
+  <div class="contenido-principal">
+    <img src="{% static 'imagenes/ferreteria.jpeg' %}" alt="Imagen de inicio" class="imagen-inicio">
+    <div class="texto-principal">
+      <h2>Contenido principal</h2>
+      <p>Este es el contenido principal de la página de inicio.</p>
+    </div>
+  </div>
+{% endblock %}

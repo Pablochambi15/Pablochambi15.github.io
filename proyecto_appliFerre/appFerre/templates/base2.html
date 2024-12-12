@@ -1,0 +1,36 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Sistema</title>
+    <link rel="stylesheet" href="{% static 'css/estilos2.css' %}">
+</head>
+<body>
+
+ 
+<nav class="navbar">
+    <div class="navbar-left">
+         
+        {% if user.is_authenticated %}
+            <span>{{ user.username }}</span> | <span>{{ user.email }}</span>
+        {% else %}
+            <span>Invitado</span>
+        {% endif %}
+    </div>
+    <div class="navbar-right">
+         
+        <a href="{% url 'productos' %}">Productos</a>
+        <a href="{% url 'almacen_detallado' %}">Almacén Detallado</a>
+        <a href="{% url 'proveedores' %}">Proveedores</a>
+    </div>
+</nav>
+
+ 
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>

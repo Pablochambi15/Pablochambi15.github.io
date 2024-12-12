@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+<body>
+    <section class="contenedor">
+        
+        <form method="POST" class="formulario">
+            {% csrf_token %}
+            <!-- Nombre de usuario -->
+            <div class="entrada">
+                <label for="username">Nombre de usuario:</label>
+                <input type="text" name="username" value="{{ form.username.value }}" required>
+                {% if form.username.errors %}
+                    <ul>
+                        {% for error in form.username.errors %}
+                            <li style="color: red;">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- Nombre -->
+            <div class="entrada">
+                <label for="nombre">Nombre:</label>
+                <input type="text" name="nombre" value="{{ form.nombre.value }}" required>
+                {% if form.nombre.errors %}
+                    <ul>
+                        {% for error in form.nombre.errors %}
+                            <li style="color: red;">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- Apellidos -->
+            <div class="entrada">
+                <label for="apellidos">Apellidos:</label>
+                <input type="text" name="apellidos" value="{{ form.apellidos.value }}" required>
+                {% if form.apellidos.errors %}
+                    <ul>
+                        {% for error in form.apellidos.errors %}
+                            <li style="color: red;">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- Email -->
+            <div class="entrada">
+                <label for="email">Email:</label>
+                <input type="email" name="email" value="{{ form.email.value }}" required>
+                {% if form.email.errors %}
+                    <ul>
+                        {% for error in form.email.errors %}
+                            <li style="color: red;">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- Contraseña -->
+            <div class="entrada">
+                <label for="password1">Contraseña:</label>
+                <input type="password" name="password1" required>
+                {% if form.password1.errors %}
+                    <ul>
+                        {% for error in form.password1.errors %}
+                            <li style="color: red;">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- Confirmación de contraseña -->
+            <div class="entrada">
+                <label for="password2">Confirmar Contraseña:</label>
+                <input type="password" name="password2" required>
+                {% if form.password2.errors %}
+                    <ul>
+                        {% for error in form.password2.errors %}
+                            <li style="color: red;">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- Fecha de nacimiento -->
+            <div class="entrada">
+                <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+                <input type="date" name="fecha_nacimiento" value="{{ form.fecha_nacimiento.value }}" required>
+                {% if form.fecha_nacimiento.errors %}
+                    <ul>
+                        {% for error in form.fecha_nacimiento.errors %}
+                            <li style="color: red;">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- Rol -->
+            <div class="entrada">
+                <label for="roles">Tipo de usuario:</label>
+                <select name="roles" required>
+                    <option value="usuario" {% if form.roles.value == 'usuario' %}selected{% endif %}>Usuario normal</option>
+                    <option value="admin" {% if form.roles.value == 'admin' %}selected{% endif %}>Administrador</option>
+                </select>
+                {% if form.roles.errors %}
+                    <ul>
+                        {% for error in form.roles.errors %}
+                            <li style="color: red;">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- Botón de envío -->
+            <button type="submit">Enviar</button>
+        </form>
+    </section>
+</body>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base2.html' %}
+
+{% block content %}
+<h1>Almacen</h1>
+
+<div class="almacen-detallado-container">
+    <h1>Almacén Detallado</h1>
+    <div class="almacen-resumen">
+        <p><strong>Ubicación:</strong> Almacén Central</p>
+        <p><strong>Total de Productos:</strong> 120</p>
+        <p><strong>Última Actualización:</strong> {{ fecha_actualizacion }}</p>
+    </div>
+
+    <button id="exportar-reporte-btn">Exportar Reporte</button>
+
+    <div class="tabla-inventario">
+        <h2>Inventario Detallado</h2>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Cantidad Disponible</th>
+                    <th>Ubicación</th>
+                    <th>Estado</th>
+                    <th>Fecha de Ingreso</th>
+                    <th>Proveedor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                    <tr>
+                        <td>{{ producto.nombre }}</td>
+                        <td>{{ producto.codigo }}</td>
+                        <td>{{ producto.descripcion }}</td>
+                        <td>{{ producto.cantidad }}</td>
+                        <td>{{ producto.ubicacion }}</td>
+                        <td>{{ producto.estado }}</td>
+                        <td>{{ producto.fecha_ingreso }}</td>
+                        <td>{{ producto.proveedor }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Sección de gráficos (opcional) -->
+    <div class="graficos">
+        <div id="grafico-inventario-categorias"></div>
+        <div id="grafico-fluctuacion-inventario"></div>
+    </div>
+</div>
+
+{% endblock %}
